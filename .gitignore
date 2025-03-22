@@ -1,0 +1,12 @@
+
+# environment
+/.env
+env
+.env
+venv
+/venv
+
+# modules
+node_modules
+/node_modules
+node_modules/
