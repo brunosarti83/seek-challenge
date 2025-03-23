@@ -17,17 +17,17 @@ def lambda_handler(event, context):
         return {
             "statusCode": 201,
             "body": json.dumps(task.model_dump()),
-            "headers": {"Content-Type": "application/json"}
+            "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}
         }
     except ValueError as e:
         return {
             "statusCode": 422,
             "body": json.dumps({"error": str(e)}),
-            "headers": {"Content-Type": "application/json"}
+            "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}
         }
     except Exception as e:
         return {
             "statusCode": 401 if "Unauthorized" in str(e) else 500,
             "body": json.dumps({"error": str(e)}),
-            "headers": {"Content-Type": "application/json"}
+            "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}
         }

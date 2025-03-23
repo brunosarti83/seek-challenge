@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  frontend:
+    build:
+      context: ./task-manager-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    volumes:
+      - ./task-manager-frontend:/app
+    environment:
+      - NODE_ENV=development
+  backend:
+    build:
+      context: ./task-manager-backend
+    ports:
+      - "4000:4000"  # Adjust if backend exposes a port locally
+    volumes:
+      - ./task-manager-backend:/app
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - JWT_SECRET=${JWT_SECRET}

@@ -10,11 +10,15 @@ def lambda_handler(event, context):
         user_create = UserCreate(**data)
         
         # Check if email already exists
-        if get_users_collection().find_one({"email": user_create.email}):
+        normalized_email = user_create.email.lower()
+        if get_users_collection().find_one({"email": normalized_email}):
             return {
                 "statusCode": 409,
                 "body": json.dumps({"error": "Email already exists"}),
-                "headers": {"Content-Type": "application/json"}
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                }
             }
         
         user_dict = {
@@ -29,9 +33,26 @@ def lambda_handler(event, context):
         return {
             "statusCode": 201,
             "body": json.dumps({"user": user.model_dump(), "token": token}),
-            "headers": {"Content-Type": "application/json"}
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            }
         }
     except ValueError as e:
-        return {"statusCode": 422, "body": json.dumps({"error": str(e)})}
+        return {
+            "statusCode": 422, 
+            "body": json.dumps({"error": str(e)}),
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            }
+        }
     except Exception as e:
-        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
+        return {
+            "statusCode": 500, 
+            "body": json.dumps({"error": str(e)}),
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            }
+        }

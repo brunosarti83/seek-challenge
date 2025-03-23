@@ -13,7 +13,10 @@ def lambda_handler(event, context):
             return {
                 "statusCode": 401,
                 "body": json.dumps({"error": "Invalid email or password"}),
-                "headers": {"Content-Type": "application/json"}
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                }
             }
         
         user = User(user_id=user_doc["user_id"], email=user_doc["email"])
@@ -22,9 +25,26 @@ def lambda_handler(event, context):
         return {
             "statusCode": 200,
             "body": json.dumps({"user": user.model_dump(), "token": token}),
-            "headers": {"Content-Type": "application/json"}
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            }
         }
     except ValueError as e:
-        return {"statusCode": 422, "body": json.dumps({"error": str(e)})}
+        return {
+            "statusCode": 422, 
+            "body": json.dumps({"error": str(e)}),
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            }
+        }
     except Exception as e:
-        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
+        return {
+            "statusCode": 500, 
+            "body": json.dumps({"error": str(e)}),
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            }
+        }

@@ -1,0 +1,12 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  padding: 0;
+  margin: 0;
+  height: 100dvh;
+  min-height: 100dvh;
+  background-color: #044F67;
+}
