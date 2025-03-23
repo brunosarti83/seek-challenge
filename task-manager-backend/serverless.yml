@@ -1,0 +1,82 @@
+service: task-manager-backend
+
+provider:
+  name: aws
+  runtime: python3.12
+  region: us-east-1
+  environment:
+    MONGO_URI: ${ssm:mongo-uri}
+    JWT_SECRET: ${ssm:jwt-secret}
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "ssm:GetParameter"
+          Resource: "arn:aws:ssm:us-east-1:751442556322:parameter/*"
+
+functions:
+  registerUser:
+    handler: src.handlers.auth_handlers.register_user.lambda_handler
+    events:
+      - http:
+          path: /register
+          method: post
+          cors: true
+
+  loginUser:
+    handler: src.handlers.auth_handlers.login_user.lambda_handler
+    events:
+      - http:
+          path: /login
+          method: post
+          cors: true
+
+  getTasks:
+    handler: src.handlers.tasks_handlers.get_tasks.lambda_handler
+    events:
+      - http:
+          path: /tasks
+          method: get
+          cors: true
+
+  createTask:
+    handler: src.handlers.tasks_handlers.create_task.lambda_handler
+    events:
+      - http:
+          path: /tasks
+          method: post
+          cors: true
+
+  updateTask:
+    handler: src.handlers.tasks_handlers.update_task.lambda_handler
+    events:
+      - http:
+          path: /tasks/{id}
+          method: put
+          cors: true
+
+  deleteTask:
+    handler: src.handlers.tasks_handlers.delete_task.lambda_handler
+    events:
+      - http:
+          path: /tasks/{id}
+          method: delete
+          cors: true
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+
+package:
+  individually: false
+  include:
+    - src/**
+  exclude:
+    - .env
+    - tests/**
+    - Dockerfile
+    - serverless.yml

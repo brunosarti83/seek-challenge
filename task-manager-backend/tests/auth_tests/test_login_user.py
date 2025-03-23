@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch
 from src.handlers.auth_handlers.login_user import lambda_handler
 import json
+import os
 
 class TestLoginUser(unittest.TestCase):
     @patch("src.handlers.auth_handlers.login_user.get_users_collection")

@@ -1,21 +1,22 @@
 import json
 import uuid
-from common.db import get_tasks_collection
-from common.auth import verify_token
-from common.models.task import TaskCreate, Task
+from src.common.db import get_tasks_collection
+from src.common.auth import verify_token
+from src.common.models.task import TaskCreate, Task
 
 def lambda_handler(event, context):
     try:
         verify_token(event)
         data = json.loads(event["body"])
         task_create = TaskCreate(**data)
-        task_dict = task_create.dict()
+        task_dict = task_create.model_dump()
         task_dict["id"] = str(uuid.uuid4())
         get_tasks_collection().insert_one(task_dict)
+        task_dict.pop("_id", None)
         task = Task(**task_dict)
         return {
             "statusCode": 201,
-            "body": json.dumps(task.dict()),
+            "body": json.dumps(task.model_dump()),
             "headers": {"Content-Type": "application/json"}
         }
     except ValueError as e:

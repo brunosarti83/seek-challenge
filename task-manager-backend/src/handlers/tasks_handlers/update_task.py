@@ -1,7 +1,7 @@
 import json
-from common.db import get_tasks_collection
-from common.auth import verify_token
-from common.models.task import TaskUpdate
+from src.common.db import get_tasks_collection
+from src.common.auth import verify_token
+from src.common.models.task import TaskUpdate
 
 def lambda_handler(event, context):
     try:
@@ -9,7 +9,7 @@ def lambda_handler(event, context):
         task_id = event["pathParameters"]["id"]
         data = json.loads(event["body"])
         task_update = TaskUpdate(**data)
-        update_dict = task_update.dict(exclude_unset=True)
+        update_dict = task_update.model_dump(exclude_unset=True) # watchout this was .dict exclude_unset may error
         if not update_dict:
             return {
                 "statusCode": 400,

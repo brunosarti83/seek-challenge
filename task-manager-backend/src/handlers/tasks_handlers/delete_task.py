@@ -1,6 +1,6 @@
 import json
-from utils.db import get_tasks_collection
-from utils.auth import verify_token
+from src.common.db import get_tasks_collection
+from src.common.auth import verify_token
 
 def lambda_handler(event, context):
     try:

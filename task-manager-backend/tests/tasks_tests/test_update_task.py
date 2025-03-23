@@ -7,6 +7,7 @@ class TestUpdateTask(unittest.TestCase):
     @patch("src.handlers.tasks_handlers.update_task.get_tasks_collection")
     @patch("src.handlers.tasks_handlers.update_task.verify_token")
     def test_update_task_success(self, mock_verify, mock_db):
+        mock_verify.return_value = "fake-user-id" 
         event = {
             "headers": {"Authorization": "Bearer validtoken"},
             "pathParameters": {"id": "1"},
@@ -19,8 +20,9 @@ class TestUpdateTask(unittest.TestCase):
         self.assertEqual(body["status"], "completed")
 
     @patch("src.handlers.tasks_handlers.update_task.get_tasks_collection")
-    @patch("src.handlers.tasks_handlers.update_task.verify_token")
+    @patch("src.handlers.tasks_handlers.update_task.verify_token")    
     def test_update_task_not_found(self, mock_verify, mock_db):
+        mock_verify.return_value = "fake-user-id"
         event = {
             "headers": {"Authorization": "Bearer validtoken"},
             "pathParameters": {"id": "999"},
@@ -31,7 +33,9 @@ class TestUpdateTask(unittest.TestCase):
         self.assertEqual(response["statusCode"], 404)
         self.assertIn("Task not found", json.loads(response["body"])["error"])
 
-    def test_update_task_extra_field(self):
+    @patch("src.handlers.tasks_handlers.update_task.verify_token")   
+    def test_update_task_extra_field(self, mock_verify):
+        mock_verify.return_value = "fake-user-id"
         event = {
             "headers": {"Authorization": "Bearer validtoken"},
             "pathParameters": {"id": "1"},
@@ -39,7 +43,7 @@ class TestUpdateTask(unittest.TestCase):
         }
         response = lambda_handler(event, None)
         self.assertEqual(response["statusCode"], 422)
-        self.assertIn("extra is not allowed", json.loads(response["body"])["error"])
+        self.assertIn("Extra inputs are not permitted", json.loads(response["body"])["error"])
 
 if __name__ == "__main__":
     unittest.main()

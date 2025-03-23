@@ -1,0 +1,232 @@
+{
+  "C:\\Users\\bruno\\Documents\\SeekChallenge\\task-manager-backend\\serverless.yml": {
+    "versionFramework": "4.9.0",
+    "servicePath": "C:\\Users\\bruno\\Documents\\SeekChallenge\\task-manager-backend\\serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "task-manager-backend",
+      "provider": {
+        "name": "aws",
+        "runtime": "python3.12",
+        "region": "us-east-1",
+        "environment": {
+          "MONGO_URI": "mongodb+srv://bsarti:yIvekD0pphgpt1ZU@clusterseek.avzp1.mongodb.net/taskdb?retryWrites=true&w=majority",
+          "JWT_SECRET": "<REDACTED>"
+        },
+        "iam": {
+          "role": {
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "ssm:GetParameter"
+                ],
+                "Resource": "arn:aws:ssm:us-east-1:751442556322:parameter/*"
+              }
+            ]
+          }
+        },
+        "stage": "dev",
+        "versionFunctions": true
+      },
+      "functions": {
+        "registerUser": {
+          "handler": "src.handlers.auth_handlers.register_user.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "/register",
+                "method": "post",
+                "cors": true
+              }
+            }
+          ],
+          "name": "task-manager-backend-dev-registerUser"
+        },
+        "loginUser": {
+          "handler": "src.handlers.auth_handlers.login_user.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "/login",
+                "method": "post",
+                "cors": true
+              }
+            }
+          ],
+          "name": "task-manager-backend-dev-loginUser"
+        },
+        "getTasks": {
+          "handler": "src.handlers.tasks_handlers.get_tasks.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "/tasks",
+                "method": "get",
+                "cors": true
+              }
+            }
+          ],
+          "name": "task-manager-backend-dev-getTasks"
+        },
+        "createTask": {
+          "handler": "src.handlers.tasks_handlers.create_task.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "/tasks",
+                "method": "post",
+                "cors": true
+              }
+            }
+          ],
+          "name": "task-manager-backend-dev-createTask"
+        },
+        "updateTask": {
+          "handler": "src.handlers.tasks_handlers.update_task.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "/tasks/{id}",
+                "method": "put",
+                "cors": true
+              }
+            }
+          ],
+          "name": "task-manager-backend-dev-updateTask"
+        },
+        "deleteTask": {
+          "handler": "src.handlers.tasks_handlers.delete_task.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "/tasks/{id}",
+                "method": "delete",
+                "cors": true
+              }
+            }
+          ],
+          "name": "task-manager-backend-dev-deleteTask"
+        }
+      },
+      "plugins": [
+        "serverless-python-requirements"
+      ],
+      "custom": {
+        "pythonRequirements": {
+          "dockerizePip": true
+        }
+      },
+      "package": {
+        "individually": false,
+        "include": [
+          "src/**"
+        ],
+        "exclude": [
+          ".env",
+          "tests/**",
+          "Dockerfile",
+          "serverless.yml"
+        ],
+        "artifactsS3KeyDirname": "serverless/task-manager-backend/dev/code-artifacts"
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "python3.12",
+      "region": "us-east-1",
+      "environment": {
+        "MONGO_URI": "mongodb+srv://bsarti:yIvekD0pphgpt1ZU@clusterseek.avzp1.mongodb.net/taskdb?retryWrites=true&w=majority",
+        "JWT_SECRET": "<REDACTED>"
+      },
+      "iam": {
+        "role": {
+          "statements": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParameter"
+              ],
+              "Resource": "arn:aws:ssm:us-east-1:751442556322:parameter/*"
+            }
+          ]
+        }
+      },
+      "stage": "dev",
+      "versionFunctions": true
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "serviceRawFile": "service: task-manager-backend\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: python3.12\r\n  region: us-east-1\r\n  environment:\r\n    MONGO_URI: ${ssm:mongo-uri}\r\n    JWT_SECRET: ${ssm:jwt-secret}\r\n  iam:\r\n    role:\r\n      statements:\r\n        - Effect: \"Allow\"\r\n          Action:\r\n            - \"ssm:GetParameter\"\r\n          Resource: \"arn:aws:ssm:us-east-1:751442556322:parameter/*\"\r\n\r\nfunctions:\r\n  registerUser:\r\n    handler: src.handlers.auth_handlers.register_user.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /register\r\n          method: post\r\n          cors: true\r\n\r\n  loginUser:\r\n    handler: src.handlers.auth_handlers.login_user.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /login\r\n          method: post\r\n          cors: true\r\n\r\n  getTasks:\r\n    handler: src.handlers.tasks_handlers.get_tasks.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks\r\n          method: get\r\n          cors: true\r\n\r\n  createTask:\r\n    handler: src.handlers.tasks_handlers.create_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks\r\n          method: post\r\n          cors: true\r\n\r\n  updateTask:\r\n    handler: src.handlers.tasks_handlers.update_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks/{id}\r\n          method: put\r\n          cors: true\r\n\r\n  deleteTask:\r\n    handler: src.handlers.tasks_handlers.delete_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks/{id}\r\n          method: delete\r\n          cors: true\r\n\r\nplugins:\r\n  - serverless-python-requirements\r\n\r\ncustom:\r\n  pythonRequirements:\r\n    dockerizePip: true\r\n\r\npackage:\r\n  individually: false\r\n  include:\r\n    - src/**\r\n  exclude:\r\n    - .env\r\n    - tests/**\r\n    - Dockerfile\r\n    - serverless.yml\r\n",
+    "command": [
+      "info"
+    ],
+    "options": {},
+    "orgId": "95e2ddba-5175-4ac2-8bf6-d9a81f986953",
+    "orgName": "brunosarti83",
+    "userId": "PyYF4SnhhNHvSHSGJv",
+    "userName": "brunosarti83",
+    "serviceProviderAwsAccountId": "751442556322",
+    "serviceProviderAwsCfStackName": "task-manager-backend-dev",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:751442556322:stack/task-manager-backend-dev/c8423880-0770-11f0-871b-0affe11aba53",
+    "serviceProviderAwsCfStackCreated": "2025-03-22T22:55:42.740Z",
+    "serviceProviderAwsCfStackUpdated": "2025-03-22T23:27:37.351Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "RegisterUserLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:751442556322:function:task-manager-backend-dev-registerUser:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-task-manager-backend-dev-RegisterUserLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "GetTasksLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:751442556322:function:task-manager-backend-dev-getTasks:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-task-manager-backend-dev-GetTasksLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "DeleteTaskLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:751442556322:function:task-manager-backend-dev-deleteTask:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-task-manager-backend-dev-DeleteTaskLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "UpdateTaskLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:751442556322:function:task-manager-backend-dev-updateTask:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-task-manager-backend-dev-UpdateTaskLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "CreateTaskLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:751442556322:function:task-manager-backend-dev-createTask:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-task-manager-backend-dev-CreateTaskLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "LoginUserLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:751442556322:function:task-manager-backend-dev-loginUser:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-task-manager-backend-dev-LoginUserLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "ServiceEndpoint",
+        "OutputValue": "https://k9qeiudz2k.execute-api.us-east-1.amazonaws.com/dev",
+        "Description": "URL of the service endpoint",
+        "ExportName": "sls-task-manager-backend-dev-ServiceEndpoint"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-us-east-1-6db5bd5a-b8c8",
+        "ExportName": "sls-task-manager-backend-dev-ServerlessDeploymentBucketName"
+      }
+    ]
+  }
+}

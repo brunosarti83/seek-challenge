@@ -1,8 +1,11 @@
 import jwt
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import bcrypt
-from common.models.user import User
+from dotenv import load_dotenv
+from src.common.models.user import User
+
+load_dotenv()
 
 SECRET_KEY = os.environ["JWT_SECRET"]
 
@@ -16,7 +19,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def generate_token(user_id: str) -> str:
     payload = {
         "user_id": user_id,
-        "exp": datetime.utcnow() + timedelta(hours=1)
+        "exp": datetime.now(timezone.utc) + timedelta(hours=1)
     }
     return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 

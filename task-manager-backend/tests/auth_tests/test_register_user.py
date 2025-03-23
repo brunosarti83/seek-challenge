@@ -6,7 +6,7 @@ import json
 class TestRegisterUser(unittest.TestCase):
     @patch("src.handlers.auth_handlers.register_user.get_users_collection")
     def test_register_user_success(self, mock_db):
-        mock_db.return_value.find_one.return_value = None  # Email doesn't exist
+        mock_db.return_value.find_one.return_value = None
         mock_db.return_value.insert_one.return_value = None
         event = {"body": '{"email": "user@example.com", "password": "securepass123"}'}
         response = lambda_handler(event, None)

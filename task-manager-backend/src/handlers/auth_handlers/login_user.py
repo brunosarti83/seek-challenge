@@ -1,7 +1,7 @@
 import json
-from common.db import get_users_collection
-from common.auth import verify_password, generate_token
-from common.models.user import UserLogin, User
+from src.common.db import get_users_collection
+from src.common.auth import verify_password, generate_token
+from src.common.models.user import UserLogin, User
 
 def lambda_handler(event, context):
     try:
@@ -21,7 +21,7 @@ def lambda_handler(event, context):
         
         return {
             "statusCode": 200,
-            "body": json.dumps({"user": user.dict(), "token": token}),
+            "body": json.dumps({"user": user.model_dump(), "token": token}),
             "headers": {"Content-Type": "application/json"}
         }
     except ValueError as e:

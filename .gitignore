@@ -10,3 +10,10 @@ venv
 node_modules
 /node_modules
 node_modules/
+
+# aux
+keys.txt
+
+
+
+

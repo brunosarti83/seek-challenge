@@ -1,8 +1,8 @@
 import json
 import uuid
-from utils.db import get_users_collection
-from utils.auth import hash_password, generate_token
-from utils.models.user import UserCreate, User
+from src.common.db import get_users_collection
+from src.common.auth import hash_password, generate_token
+from src.common.models.user import UserCreate, User
 
 def lambda_handler(event, context):
     try:
@@ -28,7 +28,7 @@ def lambda_handler(event, context):
         
         return {
             "statusCode": 201,
-            "body": json.dumps({"user": user.dict(), "token": token}),
+            "body": json.dumps({"user": user.model_dump(), "token": token}),
             "headers": {"Content-Type": "application/json"}
         }
     except ValueError as e:
