@@ -13,7 +13,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "serverless-openapi-documentation": "^0.4.0",
     "serverless-python-requirements": "^6.1.2"
   }
 }

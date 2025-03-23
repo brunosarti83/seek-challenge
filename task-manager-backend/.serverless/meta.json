@@ -41,6 +41,73 @@
               }
             }
           ],
+          "documentation": {
+            "summary": "Register a new user",
+            "description": "Creates a new user account and returns a JWT token.",
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "required": [
+                      "email",
+                      "password"
+                    ],
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "seek@challenge.com"
+                      },
+                      "password": "<REDACTED>"
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "201": {
+                "description": "User registered successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "token": "<REDACTED>",
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "email": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Validation error (e.g., invalid email or password)",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "1 validation error for UserCreate..."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "name": "task-manager-backend-dev-registerUser"
         },
         "loginUser": {
@@ -54,6 +121,62 @@
               }
             }
           ],
+          "documentation": {
+            "summary": "Log in a user",
+            "description": "Authenticates a user and returns a JWT token.",
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "required": [
+                      "email",
+                      "password"
+                    ],
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "seek@challenge.com"
+                      },
+                      "password": "<REDACTED>"
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Login successful",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "token": "<REDACTED>"
+                      }
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Invalid credentials",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "Invalid credentials"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "name": "task-manager-backend-dev-loginUser"
         },
         "getTasks": {
@@ -67,6 +190,67 @@
               }
             }
           ],
+          "documentation": {
+            "summary": "Get all tasks for the authenticated user",
+            "description": "Returns a list of tasks.",
+            "requestHeaders": [
+              {
+                "name": "Authorization",
+                "description": "JWT token in 'Bearer <token>' format",
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Tasks retrieved successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "todo",
+                              "in_progress",
+                              "completed"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Unauthorized (invalid or missing token)",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "Unauthorized: Invalid token"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "name": "task-manager-backend-dev-getTasks"
         },
         "createTask": {
@@ -80,6 +264,81 @@
               }
             }
           ],
+          "documentation": {
+            "summary": "Create a new task",
+            "description": "Adds a task for the authenticated user.",
+            "requestHeaders": [
+              {
+                "name": "Authorization",
+                "description": "JWT token in 'Bearer <token>' format",
+                "required": true
+              }
+            ],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "required": [
+                      "title"
+                    ],
+                    "properties": {
+                      "title": {
+                        "type": "string",
+                        "example": "New Task"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Task description"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "201": {
+                "description": "Task created successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Validation error (e.g., missing title)",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "Extra inputs are not permitted"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "name": "task-manager-backend-dev-createTask"
         },
         "updateTask": {
@@ -93,6 +352,94 @@
               }
             }
           ],
+          "documentation": {
+            "summary": "Update an existing task",
+            "description": "Modifies a task by ID for the authenticated user.",
+            "requestHeaders": [
+              {
+                "name": "Authorization",
+                "description": "JWT token in 'Bearer <token>' format",
+                "required": true
+              }
+            ],
+            "pathParams": [
+              {
+                "name": "id",
+                "description": "Task ID",
+                "required": true
+              }
+            ],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string",
+                        "example": "Updated Task"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Updated description"
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "todo",
+                          "in_progress",
+                          "completed"
+                        ],
+                        "example": "completed"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Task updated successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Task not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "Task not found"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "name": "task-manager-backend-dev-updateTask"
         },
         "deleteTask": {
@@ -106,13 +453,60 @@
               }
             }
           ],
+          "documentation": {
+            "summary": "Delete a task",
+            "description": "Removes a task by ID for the authenticated user.",
+            "requestHeaders": [
+              {
+                "name": "Authorization",
+                "description": "JWT token in 'Bearer <token>' format",
+                "required": true
+              }
+            ],
+            "pathParams": [
+              {
+                "name": "id",
+                "description": "Task ID",
+                "required": true
+              }
+            ],
+            "responses": {
+              "204": {
+                "description": "Task deleted successfully",
+                "content": {}
+              },
+              "404": {
+                "description": "Task not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "Task not found"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "name": "task-manager-backend-dev-deleteTask"
         }
       },
       "plugins": [
-        "serverless-python-requirements"
+        "serverless-python-requirements",
+        "serverless-openapi-documentation"
       ],
       "custom": {
+        "documentation": {
+          "version": "1.0",
+          "title": "Seek Challenge API",
+          "description": "API for managing tasks",
+          "termsOfService": ""
+        },
         "pythonRequirements": {
           "dockerizePip": true
         }
@@ -164,9 +558,10 @@
       "serviceProvider": null,
       "instanceParameters": null
     },
-    "serviceRawFile": "service: task-manager-backend\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: python3.12\r\n  region: us-east-1\r\n  environment:\r\n    MONGO_URI: ${ssm:mongo-uri}\r\n    JWT_SECRET: ${ssm:jwt-secret}\r\n  iam:\r\n    role:\r\n      statements:\r\n        - Effect: \"Allow\"\r\n          Action:\r\n            - \"ssm:GetParameter\"\r\n          Resource: \"arn:aws:ssm:us-east-1:751442556322:parameter/*\"\r\n\r\nfunctions:\r\n  registerUser:\r\n    handler: src.handlers.auth_handlers.register_user.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /register\r\n          method: post\r\n          cors: true\r\n\r\n  loginUser:\r\n    handler: src.handlers.auth_handlers.login_user.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /login\r\n          method: post\r\n          cors: true\r\n\r\n  getTasks:\r\n    handler: src.handlers.tasks_handlers.get_tasks.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks\r\n          method: get\r\n          cors: true\r\n\r\n  createTask:\r\n    handler: src.handlers.tasks_handlers.create_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks\r\n          method: post\r\n          cors: true\r\n\r\n  updateTask:\r\n    handler: src.handlers.tasks_handlers.update_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks/{id}\r\n          method: put\r\n          cors: true\r\n\r\n  deleteTask:\r\n    handler: src.handlers.tasks_handlers.delete_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks/{id}\r\n          method: delete\r\n          cors: true\r\n\r\nplugins:\r\n  - serverless-python-requirements\r\n\r\ncustom:\r\n  pythonRequirements:\r\n    dockerizePip: true\r\n\r\npackage:\r\n  individually: false\r\n  include:\r\n    - src/**\r\n  exclude:\r\n    - .env\r\n    - tests/**\r\n    - Dockerfile\r\n    - serverless.yml\r\n",
+    "serviceRawFile": "service: task-manager-backend\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: python3.12\r\n  region: us-east-1\r\n  environment:\r\n    MONGO_URI: ${ssm:mongo-uri}\r\n    JWT_SECRET: ${ssm:jwt-secret}\r\n  iam:\r\n    role:\r\n      statements:\r\n        - Effect: \"Allow\"\r\n          Action:\r\n            - \"ssm:GetParameter\"\r\n          Resource: \"arn:aws:ssm:us-east-1:751442556322:parameter/*\"\r\n\r\nfunctions:\r\n  registerUser:\r\n    handler: src.handlers.auth_handlers.register_user.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /register\r\n          method: post\r\n          cors: true\r\n    documentation:\r\n      summary: \"Register a new user\"\r\n      description: \"Creates a new user account and returns a JWT token.\"\r\n      requestBody:\r\n        content:\r\n          application/json:\r\n            schema:\r\n              type: object\r\n              required:\r\n                - email\r\n                - password\r\n              properties:\r\n                email:\r\n                  type: string\r\n                  format: email\r\n                  example: \"seek@challenge.com\"\r\n                password:\r\n                  type: string\r\n                  example: \"SeekChallenge\"\r\n      responses:\r\n        201:\r\n          description: \"User registered successfully\"\r\n          content:\r\n            application/json:\r\n              schema:\r\n                type: object\r\n                properties:\r\n                  token:\r\n                    type: string\r\n                    example: \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\r\n                  user:\r\n                    type: object\r\n                    properties:\r\n                      id:\r\n                        type: string\r\n                      email:\r\n                        type: string\r\n        422:\r\n          description: \"Validation error (e.g., invalid email or password)\"\r\n          content:\r\n            application/json:\r\n              schema:\r\n                type: object\r\n                properties:\r\n                  error:\r\n                    type: string\r\n                    example: \"1 validation error for UserCreate...\"\r\n\r\n  loginUser:\r\n    handler: src.handlers.auth_handlers.login_user.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /login\r\n          method: post\r\n          cors: true\r\n    documentation:\r\n      summary: \"Log in a user\"\r\n      description: \"Authenticates a user and returns a JWT token.\"\r\n      requestBody:\r\n        content:\r\n          application/json:\r\n            schema:\r\n              type: object\r\n              required:\r\n                - email\r\n                - password\r\n              properties:\r\n                email:\r\n                  type: string\r\n                  format: email\r\n                  example: \"seek@challenge.com\"\r\n                password:\r\n                  type: string\r\n                  example: \"SeekChallenge\"\r\n      responses:\r\n        200:\r\n          description: \"Login successful\"\r\n          content:\r\n            application/json:\r\n              schema:\r\n                type: object\r\n                properties:\r\n                  token:\r\n                    type: string\r\n                    example: \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\r\n        401:\r\n          description: \"Invalid credentials\"\r\n          content:\r\n            application/json:\r\n              schema:\r\n                type: object\r\n                properties:\r\n                  error:\r\n                    type: string\r\n                    example: \"Invalid credentials\"\r\n\r\n  getTasks:\r\n    handler: src.handlers.tasks_handlers.get_tasks.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks\r\n          method: get\r\n          cors: true\r\n    documentation:\r\n      summary: \"Get all tasks for the authenticated user\"\r\n      description: \"Returns a list of tasks.\"\r\n      requestHeaders:\r\n        - name: Authorization\r\n          description: \"JWT token in 'Bearer <token>' format\"\r\n          required: true\r\n      responses:\r\n        200:\r\n          description: \"Tasks retrieved successfully\"\r\n          content:\r\n            application/json:\r\n              schema:\r\n                type: array\r\n                items:\r\n                  type: object\r\n                  properties:\r\n                    id:\r\n                      type: string\r\n                    title:\r\n                      type: string\r\n                    description:\r\n                      type: string\r\n                    status:\r\n                      type: string\r\n                      enum: [\"todo\", \"in_progress\", \"completed\"]\r\n        401:\r\n          description: \"Unauthorized (invalid or missing token)\"\r\n          content:\r\n            application/json:\r\n              schema:\r\n                type: object\r\n                properties:\r\n                  error:\r\n                    type: string\r\n                    example: \"Unauthorized: Invalid token\"\r\n\r\n  createTask:\r\n    handler: src.handlers.tasks_handlers.create_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks\r\n          method: post\r\n          cors: true\r\n    documentation:\r\n      summary: \"Create a new task\"\r\n      description: \"Adds a task for the authenticated user.\"\r\n      requestHeaders:\r\n        - name: Authorization\r\n          description: \"JWT token in 'Bearer <token>' format\"\r\n          required: true\r\n      requestBody:\r\n        content:\r\n          application/json:\r\n            schema:\r\n              type: object\r\n              required:\r\n                - title\r\n              properties:\r\n                title:\r\n                  type: string\r\n                  example: \"New Task\"\r\n                description:\r\n                  type: string\r\n                  example: \"Task description\"\r\n      responses:\r\n        201:\r\n          description: \"Task created successfully\"\r\n          content:\r\n            application/json:\r\n              schema:\r\n                type: object\r\n                properties:\r\n                  id:\r\n                    type: string\r\n                  title:\r\n                    type: string\r\n                  description:\r\n                    type: string\r\n                  status:\r\n                    type: string\r\n        422:\r\n          description: \"Validation error (e.g., missing title)\"\r\n          content:\r\n            application/json:\r\n              schema:\r\n                type: object\r\n                properties:\r\n                  error:\r\n                    type: string\r\n                    example: \"Extra inputs are not permitted\"\r\n\r\n  updateTask:\r\n    handler: src.handlers.tasks_handlers.update_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks/{id}\r\n          method: put\r\n          cors: true\r\n    documentation:\r\n      summary: \"Update an existing task\"\r\n      description: \"Modifies a task by ID for the authenticated user.\"\r\n      requestHeaders:\r\n        - name: Authorization\r\n          description: \"JWT token in 'Bearer <token>' format\"\r\n          required: true\r\n      pathParams:\r\n        - name: id\r\n          description: \"Task ID\"\r\n          required: true\r\n      requestBody:\r\n        content:\r\n          application/json:\r\n            schema:\r\n              type: object\r\n              properties:\r\n                title:\r\n                  type: string\r\n                  example: \"Updated Task\"\r\n                description:\r\n                  type: string\r\n                  example: \"Updated description\"\r\n                status:\r\n                  type: string\r\n                  enum: [\"todo\", \"in_progress\", \"completed\"]\r\n                  example: \"completed\"\r\n      responses:\r\n        200:\r\n          description: \"Task updated successfully\"\r\n          content:\r\n            application/json:\r\n              schema:\r\n                type: object\r\n                properties:\r\n                  id:\r\n                    type: string\r\n                  title:\r\n                    type: string\r\n                  description:\r\n                    type: string\r\n                  status:\r\n                    type: string\r\n        404:\r\n          description: \"Task not found\"\r\n          content:\r\n            application/json:\r\n              schema:\r\n                type: object\r\n                properties:\r\n                  error:\r\n                    type: string\r\n                    example: \"Task not found\"\r\n\r\n  deleteTask:\r\n    handler: src.handlers.tasks_handlers.delete_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks/{id}\r\n          method: delete\r\n          cors: true\r\n    documentation:\r\n      summary: \"Delete a task\"\r\n      description: \"Removes a task by ID for the authenticated user.\"\r\n      requestHeaders:\r\n        - name: Authorization\r\n          description: \"JWT token in 'Bearer <token>' format\"\r\n          required: true\r\n      pathParams:\r\n        - name: id\r\n          description: \"Task ID\"\r\n          required: true\r\n      responses:\r\n        204:\r\n          description: \"Task deleted successfully\"\r\n          content: {}\r\n        404:\r\n          description: \"Task not found\"\r\n          content:\r\n            application/json:\r\n              schema:\r\n                type: object\r\n                properties:\r\n                  error:\r\n                    type: string\r\n                    example: \"Task not found\"\r\n\r\nplugins:\r\n  - serverless-python-requirements\r\n  - serverless-openapi-documentation\r\n\r\ncustom:\r\n  documentation:\r\n    version: \"1.0\"\r\n    title: \"Seek Challenge API\"\r\n    description: \"API for managing tasks\"\r\n    termsOfService: \"\"\r\n  pythonRequirements:\r\n    dockerizePip: true\r\n\r\npackage:\r\n  individually: false\r\n  include:\r\n    - src/**\r\n  exclude:\r\n    - .env\r\n    - tests/**\r\n    - Dockerfile\r\n    - serverless.yml\r\n",
     "command": [
-      "info"
+      "openapi",
+      "generate"
     ],
     "options": {},
     "orgId": "95e2ddba-5175-4ac2-8bf6-d9a81f986953",
