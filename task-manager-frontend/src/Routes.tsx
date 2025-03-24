@@ -33,7 +33,5 @@ export function Routes() {
           { path: '/', element: <Home /> },
         ]
       },
-      // No match
-      // { path: '*', element: <Navigate to="/404" replace /> },
     ]);
 }

@@ -1,6 +1,6 @@
 ## Seek Tasks - Bruno Sarti
 
-App de task management en con backend en frameworw serverless (AWS) y frontend en React+Vite+MUI, la base de datos es una instancia M0 de Atlas(MongoDB). Mejores prácticas de seguridad como la omisión del archivo .env del repositorio fueron omitidas para simplificar la revisión.
+App de task management, con backend en frameworw serverless (AWS) y frontend en React+Vite+MUI, la base de datos es una instancia M0 de Atlas(MongoDB). Mejores prácticas de seguridad como la omisión del archivo .env del repositorio fueron omitidas para simplificar la revisión.
 
 El deploy es servido a través de Cloudfront y está disponible en: https://dmy9yo835a3z3.cloudfront.net
 
@@ -12,7 +12,7 @@ POST | /login
 GET | /tasks  
 POST | /tasks  
 PUT | /tasks/{id}  
-DELETE | /{id}
+DELETE | tasks/{id}
 
 se incluye un archivo compatible con OpenApi (Swager) en ./task-managerbackend/openapi.json que se puede importar en https://editor.swagger.io/ (no requiere usuario) ó directamente en Postman
 

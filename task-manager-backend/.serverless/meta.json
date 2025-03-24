@@ -10,7 +10,7 @@
         "runtime": "python3.12",
         "region": "us-east-1",
         "environment": {
-          "MONGO_URI": "mongodb+srv://bsarti:yIvekD0pphgpt1ZU@clusterseek.avzp1.mongodb.net/taskdb?retryWrites=true&w=majority",
+          "MONGO_URI": "\r\n# database connection\r\nMONGO_URI = mongodb+srv://bsarti:yIvekD0pphgpt1ZU@clusterseek.avzp1.mongodb.net/taskdb?retryWrites=true&w=majority\r\n\r\n# JWT\r\nJWT_SECRET = seeksecretkey1234",
           "JWT_SECRET": "<REDACTED>"
         },
         "iam": {
@@ -105,8 +105,7 @@
       },
       "plugins": [
         "serverless-python-requirements",
-        "serverless-offline",
-        "serverless-offline-ssm"
+        "serverless-offline"
       ],
       "custom": {
         "pythonRequirements": {
@@ -131,7 +130,7 @@
       "runtime": "python3.12",
       "region": "us-east-1",
       "environment": {
-        "MONGO_URI": "mongodb+srv://bsarti:yIvekD0pphgpt1ZU@clusterseek.avzp1.mongodb.net/taskdb?retryWrites=true&w=majority",
+        "MONGO_URI": "\r\n# database connection\r\nMONGO_URI = mongodb+srv://bsarti:yIvekD0pphgpt1ZU@clusterseek.avzp1.mongodb.net/taskdb?retryWrites=true&w=majority\r\n\r\n# JWT\r\nJWT_SECRET = seeksecretkey1234",
         "JWT_SECRET": "<REDACTED>"
       },
       "iam": {
@@ -160,14 +159,18 @@
       "instanceParameters": null
     },
     "error": {
-      "message": "serverless-offline-ssm missing configuration stages.",
-      "stack": "Error: serverless-offline-ssm missing configuration stages.\n    at ServerlessOfflineSSM.setCustomConfig (C:\\Users\\bruno\\Documents\\SeekChallenge\\task-manager-backend\\node_modules\\serverless-offline-ssm\\dist\\index.js:29:23)\n    at new ServerlessOfflineSSM (C:\\Users\\bruno\\Documents\\SeekChallenge\\task-manager-backend\\node_modules\\serverless-offline-ssm\\dist\\index.js:34:14)\n    at PluginManager.addPlugin (file:///C:/Users/bruno/.serverless/releases/4.9.0/package/dist/sf-core.js:809:272)\n    at file:///C:/Users/bruno/.serverless/releases/4.9.0/package/dist/sf-core.js:809:1434\n    at Array.forEach (<anonymous>)\n    at PluginManager.loadAllPlugins (file:///C:/Users/bruno/.serverless/releases/4.9.0/package/dist/sf-core.js:809:1412)\n    at async Serverless.init (file:///C:/Users/bruno/.serverless/releases/4.9.0/package/dist/sf-core.js:816:9840)\n    at async runFramework (file:///C:/Users/bruno/.serverless/releases/4.9.0/package/dist/sf-core.js:843:837)\n    at async TraditionalRunner.run (file:///C:/Users/bruno/.serverless/releases/4.9.0/package/dist/sf-core.js:839:28308)\n    at async route (file:///C:/Users/bruno/.serverless/releases/4.9.0/package/dist/sf-core.js:877:2779)\n    at async Object.run (file:///C:/Users/bruno/.serverless/releases/4.9.0/package/dist/sf-core.js:878:3661)\n    at async run2 (file:///C:/Users/bruno/.serverless/releases/4.9.0/package/dist/sf-core.js:878:4814)"
+      "message": "The \"config credentials\" command was deprecated in v4. To configure your AWS credentials, run the \"serverless\" command instead.",
+      "code": "UNRECOGNIZED_CLI_COMMAND"
     },
-    "serviceRawFile": "service: task-manager-backend\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: python3.12\r\n  region: us-east-1\r\n  environment:\r\n    MONGO_URI: ${ssm:mongo-uri}\r\n    JWT_SECRET: ${ssm:jwt-secret}\r\n  iam:\r\n    role:\r\n      statements:\r\n        - Effect: \"Allow\"\r\n          Action:\r\n            - \"ssm:GetParameter\"\r\n          Resource: \"arn:aws:ssm:us-east-1:751442556322:parameter/*\"\r\n\r\nfunctions:\r\n  registerUser:\r\n    handler: src.handlers.auth_handlers.register_user.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /register\r\n          method: post\r\n          cors: true\r\n\r\n  loginUser:\r\n    handler: src.handlers.auth_handlers.login_user.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /login\r\n          method: post\r\n          cors: true\r\n\r\n  getTasks:\r\n    handler: src.handlers.tasks_handlers.get_tasks.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks\r\n          method: get\r\n          cors: true\r\n\r\n  createTask:\r\n    handler: src.handlers.tasks_handlers.create_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks\r\n          method: post\r\n          cors: true\r\n\r\n  updateTask:\r\n    handler: src.handlers.tasks_handlers.update_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks/{id}\r\n          method: put\r\n          cors: true\r\n\r\n  deleteTask:\r\n    handler: src.handlers.tasks_handlers.delete_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks/{id}\r\n          method: delete\r\n          cors: true\r\n\r\nplugins:\r\n  - serverless-python-requirements\r\n  - serverless-offline\r\n  - serverless-offline-ssm\r\n\r\ncustom:\r\n  pythonRequirements:\r\n    dockerizePip: true\r\n\r\npackage:\r\n  individually: false\r\n  include:\r\n    - src/**\r\n  exclude:\r\n    - .env\r\n    - tests/**\r\n    - Dockerfile\r\n    - serverless.yml\r\n",
+    "serviceRawFile": "service: task-manager-backend\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: python3.12\r\n  region: us-east-1\r\n  environment:\r\n    MONGO_URI: ${file(.env):MONGO_URI, ssm:mongo-uri}\r\n    JWT_SECRET: ${file(.env):JWT_SECRET, ssm:jwt-secret}\r\n  iam:\r\n    role:\r\n      statements:\r\n        - Effect: \"Allow\"\r\n          Action:\r\n            - \"ssm:GetParameter\"\r\n          Resource: \"arn:aws:ssm:us-east-1:751442556322:parameter/*\"\r\n\r\nfunctions:\r\n  registerUser:\r\n    handler: src.handlers.auth_handlers.register_user.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /register\r\n          method: post\r\n          cors: true\r\n\r\n  loginUser:\r\n    handler: src.handlers.auth_handlers.login_user.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /login\r\n          method: post\r\n          cors: true\r\n\r\n  getTasks:\r\n    handler: src.handlers.tasks_handlers.get_tasks.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks\r\n          method: get\r\n          cors: true\r\n\r\n  createTask:\r\n    handler: src.handlers.tasks_handlers.create_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks\r\n          method: post\r\n          cors: true\r\n\r\n  updateTask:\r\n    handler: src.handlers.tasks_handlers.update_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks/{id}\r\n          method: put\r\n          cors: true\r\n\r\n  deleteTask:\r\n    handler: src.handlers.tasks_handlers.delete_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks/{id}\r\n          method: delete\r\n          cors: true\r\n\r\nplugins:\r\n  - serverless-python-requirements\r\n  - serverless-offline\r\n\r\ncustom:\r\n  pythonRequirements:\r\n    dockerizePip: true\r\n\r\npackage:\r\n  individually: false\r\n  include:\r\n    - src/**\r\n  exclude:\r\n    - .env\r\n    - tests/**\r\n    - Dockerfile\r\n    - serverless.yml\r\n",
     "command": [
-      "offline"
+      "config",
+      "credentials"
     ],
-    "options": {},
+    "options": {
+      "provider": "serverless",
+      "key": "superSecretAccessKey1234"
+    },
     "orgId": "95e2ddba-5175-4ac2-8bf6-d9a81f986953",
     "orgName": "brunosarti83",
     "userId": "PyYF4SnhhNHvSHSGJv",
