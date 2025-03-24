@@ -6,7 +6,7 @@ El deploy es servido a través de Cloudfront y está disponible en: https://dmy9
 
 La url base de la api es: https://k9qeiudz2k.execute-api.us-east-1.amazonaws.com/dev
 
-endpoints:
+Endpoints:
 POST | /register  
 POST | /login  
 GET | /tasks  
