@@ -66,6 +66,7 @@ functions:
 
 plugins:
   - serverless-python-requirements
+  - serverless-offline
 
 custom:
   pythonRequirements:

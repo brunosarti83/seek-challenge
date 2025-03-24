@@ -11,8 +11,16 @@ node_modules
 /node_modules
 node_modules/
 
+# builds
+dist/
+
 # aux
 keys.txt
+
+# pycache
+__pycache__/
+
+
 
 
 
