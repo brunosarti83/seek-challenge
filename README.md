@@ -1,22 +1,32 @@
 ## Seek Tasks - Bruno Sarti
 
-This project uses the Serverless Framework to deploy a Python 3.12 backend to AWS Lambda and API Gateway.
+App de task management en con backend en frameworw serverless (AWS) y frontend en React+Vite+MUI, la base de datos es una instancia M0 de Atlas(MongoDB). Mejores prácticas de seguridad como la omisión del archivo .env del repositorio fueron omitidas para simplificar la revisión.
 
-### Setup
+El deploy es servido a través de Cloudfront y está disponible en: https://dmy9yo835a3z3.cloudfront.net
 
-### npm install
+La url base de la api es: https://k9qeiudz2k.execute-api.us-east-1.amazonaws.com/dev
 
-to install serverless-python-requirements & serverless offline (already listed in package.json)
+endpoints:
+POST | /register  
+POST | /login  
+GET | /tasks  
+POST | /tasks  
+PUT | /tasks/{id}  
+DELETE | /{id}
 
-### setup AWS env secrets
+se incluye un archivo compatible con OpenApi (Swager) en ./task-managerbackend/openapi.json que se puede importar en https://editor.swagger.io/ (no requiere usuario) ó directamente en Postman
 
-aws ssm put-parameter --name "/task-manager/MONGO_URI" --value "mongodb+srv://<user>:<pass>@cluster0.mongodb.net/taskdb" --type "SecureString" --overwrite
-aws ssm put-parameter --name "/task-manager/JWT_SECRET" --value "your-secret-key" --type "SecureString" --overwrite
+### Docker
 
-### command to deploy
+```bash
+docker-compose up --build --detach
+```
 
-serverless deploy
+este comando hará disponible la api localmente en el puerto 4000 y el frontend en el puerto 3000
 
-### command to run serverless locally
+### Testing
 
-serverless offline
+para correr pruebas en backend
+
+cd task-manager-backend
+python -m unittest discover -s tests -t .

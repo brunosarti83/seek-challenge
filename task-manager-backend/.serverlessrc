@@ -1,0 +1,32 @@
+{
+  "userId": "PyYF4SnhhNHvSHSGJv",
+  "frameworkId": "2380bcb9-fe7a-4b85-aded-b77b41102b65",
+  "trackingDisabled": false,
+  "enterpriseDisabled": false,
+  "meta": {
+    "created_at": 1742682788,
+    "updated_at": 1742683023
+  },
+  "users": {
+    "PyYF4SnhhNHvSHSGJv": {
+      "userId": "PyYF4SnhhNHvSHSGJv",
+      "dashboard": {
+        "accessKeys": {
+          "brunosarti83": "AKGf98LXLRAZei3cRBTf5TFxa1ADIP0WuhHDIsW6PsOzh"
+        },
+        "idToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56azVNREl5TVRnNFJqWTBORGswT0VJM1JrRXpORGN4UmtVMU1FWXdNemczT1VKQlFqRTBNZyJ9.eyJuaWNrbmFtZSI6ImJydW5vc2FydGkuYnMiLCJuYW1lIjoiYnJ1bm9zYXJ0aS5ic0BnbWFpbC5jb20iLCJwaWN0dXJlIjoiaHR0cHM6Ly9zLmdyYXZhdGFyLmNvbS9hdmF0YXIvMWMzNDc2YzY3Y2I4MmMyZjY2YzVkZjNmZGFmY2RlNWY_cz00ODAmcj1wZyZkPWh0dHBzJTNBJTJGJTJGY2RuLmF1dGgwLmNvbSUyRmF2YXRhcnMlMkZici5wbmciLCJ1cGRhdGVkX2F0IjoiMjAyNS0wMy0yMlQyMjozNjoxOS44NzdaIiwiZW1haWwiOiJicnVub3NhcnRpLmJzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiaXNzIjoiaHR0cHM6Ly9hdXRoLnNlcnZlcmxlc3MuY29tLyIsImF1ZCI6IllBSE9HOHBhcGIxdGtyTHR0TlZvVk9TczRZTE9qck5qIiwic3ViIjoiYXV0aDB8NjdkZjNiNjIxNjdhMjNmNDdkMTc2MTY1IiwiaWF0IjoxNzQyNjgyOTg0LCJleHAiOjE3NDM1NDY5ODQsInNpZCI6IjhaelU4ZktoWDZZMHBWTnV2SzJjQlRVZlJhaHM1QUlzIn0.dDiYxdur5XkQ-fzkcHzVr6kR34pdtYOz2QUVSGwn1NUNSMCFTA3YWL1UoIP46GyS96iZdaoJQ62eG8e_z8i8RolpvHxxg6JycGsm_fFZT_e2rXC4mZa6n4deruf9cm_JUy_Hz_0D8s82K9-s0UOxgSW5ZHMv1MEIeLJ0DBxem18KWGlA1fedjZPddIygKtm5fKeLQVktK4gC2GQoOYUQVdZqYq0VJRiaq_Ynr-2JqIFAeknJvd0ojEkNPUhj8q3ZVGA50m52FISUfvq59AVII_Umb87UH1ZEjhmc1WWX8We7IC_MsAiuHjm1DXUgnUiP_iYsqJ5xJn85rUvNIaxCoA",
+        "refreshToken": "vWdk2BJRz7zLk-kPVGqXzOyeX8fZrVh-OZeL4H5d_4F8W",
+        "expiresAt": 86400,
+        "accessToken": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnNlcnZlcmxlc3MuY29tLyJ9..4WoHSO1PmEoY0w5H.vBXZD6pD2lWwnPwTi8ipHHVXR9vO1is1vNATEZjKk28qTvi3E_-XhPThL7CucjBt2YHpNwMU2Z0lDQE72vkp0OKov4V1riTTvU_SAq2qaN7DBxnSV4tQo3H447Ab5NTv8xIUDE_3mO3MhDv4gXhse2ulrtM09U8_bBVjqzhoS72UEB6VvnVvrQVbDvnSqa7XEJwzesq4mG2gNcW1Haqi-nwr4MMME8jr6FHEwno2oqiF7Oa9QFQxhUXGLmR1BGALKoZav6d2A7GJJKWFK-FTufKbqS6vklmsmXgIb1QeFJWPNstRNrjknzZrGI7Dzp5uT6M6A_SSZhgq.NTo95qDAmFCl1y0SmVAe0g"
+      },
+      "name": "brunosarti.bs@gmail.com",
+      "email": "brunosarti.bs@gmail.com",
+      "username": "brunosarti83",
+      "defaultOrgName": "brunosarti83"
+    }
+  },
+  "accessKeys": {
+    "orgs": {},
+    "defaultOrgName": null
+  }
+}

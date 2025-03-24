@@ -227,5 +227,182 @@
         "ExportName": "sls-task-manager-backend-dev-ServerlessDeploymentBucketName"
       }
     ]
+  },
+  "/app/serverless.yml": {
+    "versionFramework": "4.9.0",
+    "servicePath": "/app/serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "task-manager-backend",
+      "provider": {
+        "name": "aws",
+        "runtime": "python3.12",
+        "region": "us-east-1",
+        "environment": {
+          "MONGO_URI": "${ssm:mongo-uri}",
+          "JWT_SECRET": "<REDACTED>"
+        },
+        "iam": {
+          "role": {
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "ssm:GetParameter"
+                ],
+                "Resource": "arn:aws:ssm:us-east-1:751442556322:parameter/*"
+              }
+            ]
+          }
+        }
+      },
+      "functions": {
+        "registerUser": {
+          "handler": "src.handlers.auth_handlers.register_user.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "/register",
+                "method": "post",
+                "cors": true
+              }
+            }
+          ]
+        },
+        "loginUser": {
+          "handler": "src.handlers.auth_handlers.login_user.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "/login",
+                "method": "post",
+                "cors": true
+              }
+            }
+          ]
+        },
+        "getTasks": {
+          "handler": "src.handlers.tasks_handlers.get_tasks.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "/tasks",
+                "method": "get",
+                "cors": true
+              }
+            }
+          ]
+        },
+        "createTask": {
+          "handler": "src.handlers.tasks_handlers.create_task.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "/tasks",
+                "method": "post",
+                "cors": true
+              }
+            }
+          ]
+        },
+        "updateTask": {
+          "handler": "src.handlers.tasks_handlers.update_task.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "/tasks/{id}",
+                "method": "put",
+                "cors": true
+              }
+            }
+          ]
+        },
+        "deleteTask": {
+          "handler": "src.handlers.tasks_handlers.delete_task.lambda_handler",
+          "events": [
+            {
+              "http": {
+                "path": "/tasks/{id}",
+                "method": "delete",
+                "cors": true
+              }
+            }
+          ]
+        }
+      },
+      "plugins": [
+        "serverless-python-requirements",
+        "serverless-offline"
+      ],
+      "custom": {
+        "pythonRequirements": {
+          "dockerizePip": true
+        }
+      },
+      "package": {
+        "individually": false,
+        "include": [
+          "src/**"
+        ],
+        "exclude": [
+          ".env",
+          "tests/**",
+          "Dockerfile",
+          "serverless.yml"
+        ]
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "python3.12",
+      "region": "us-east-1",
+      "environment": {
+        "MONGO_URI": "${ssm:mongo-uri}",
+        "JWT_SECRET": "<REDACTED>"
+      },
+      "iam": {
+        "role": {
+          "statements": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParameter"
+              ],
+              "Resource": "arn:aws:ssm:us-east-1:751442556322:parameter/*"
+            }
+          ]
+        }
+      }
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "error": {
+      "message": "Failed to resolve variable 'mongo-uri' with resolver 'ssm' and provider 'default-aws-credential-resolver': Error: AWS credentials missing or invalid. Original error from AWS: Could not load credentials from any providers",
+      "stack": "Error: Failed to resolve variable 'mongo-uri' with resolver 'ssm' and provider 'default-aws-credential-resolver': Error: AWS credentials missing or invalid. Original error from AWS: Could not load credentials from any providers\n    at #resolveKey (file:///root/.serverless/releases/4.9.0/package/dist/sf-core.js:550:25539)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async _ResolverManager.resolve (file:///root/.serverless/releases/4.9.0/package/dist/sf-core.js:550:31529)\n    at async #handlePlaceholderNode (file:///root/.serverless/releases/4.9.0/package/dist/sf-core.js:550:30074)\n    at async file:///root/.serverless/releases/4.9.0/package/dist/sf-core.js:550:27946\n    at async processNodeAndHandleCompletion (file:///root/.serverless/releases/4.9.0/package/dist/sf-core.js:550:16727)",
+      "code": "RESOLVER_RESOLVE_VARIABLE_ERROR"
+    },
+    "serviceRawFile": "service: task-manager-backend\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: python3.12\r\n  region: us-east-1\r\n  environment:\r\n    MONGO_URI: ${ssm:mongo-uri}\r\n    JWT_SECRET: ${ssm:jwt-secret}\r\n  iam:\r\n    role:\r\n      statements:\r\n        - Effect: \"Allow\"\r\n          Action:\r\n            - \"ssm:GetParameter\"\r\n          Resource: \"arn:aws:ssm:us-east-1:751442556322:parameter/*\"\r\n\r\nfunctions:\r\n  registerUser:\r\n    handler: src.handlers.auth_handlers.register_user.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /register\r\n          method: post\r\n          cors: true\r\n\r\n  loginUser:\r\n    handler: src.handlers.auth_handlers.login_user.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /login\r\n          method: post\r\n          cors: true\r\n\r\n  getTasks:\r\n    handler: src.handlers.tasks_handlers.get_tasks.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks\r\n          method: get\r\n          cors: true\r\n\r\n  createTask:\r\n    handler: src.handlers.tasks_handlers.create_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks\r\n          method: post\r\n          cors: true\r\n\r\n  updateTask:\r\n    handler: src.handlers.tasks_handlers.update_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks/{id}\r\n          method: put\r\n          cors: true\r\n\r\n  deleteTask:\r\n    handler: src.handlers.tasks_handlers.delete_task.lambda_handler\r\n    events:\r\n      - http:\r\n          path: /tasks/{id}\r\n          method: delete\r\n          cors: true\r\n\r\nplugins:\r\n  - serverless-python-requirements\r\n  - serverless-offline\r\n\r\ncustom:\r\n  pythonRequirements:\r\n    dockerizePip: true\r\n\r\npackage:\r\n  individually: false\r\n  include:\r\n    - src/**\r\n  exclude:\r\n    - .env\r\n    - tests/**\r\n    - Dockerfile\r\n    - serverless.yml\r\n",
+    "command": [
+      "offline"
+    ],
+    "options": {
+      "host": "0.0.0.0"
+    },
+    "orgId": "95e2ddba-5175-4ac2-8bf6-d9a81f986953",
+    "orgName": "brunosarti83",
+    "userId": "PyYF4SnhhNHvSHSGJv",
+    "userName": "brunosarti83",
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
   }
 }

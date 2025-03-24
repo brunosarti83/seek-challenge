@@ -5,8 +5,8 @@ provider:
   runtime: python3.12
   region: us-east-1
   environment:
-    MONGO_URI: ${ssm:mongo-uri}
-    JWT_SECRET: ${ssm:jwt-secret}
+    MONGO_URI: ${file(.env):MONGO_URI, ssm:mongo-uri}
+    JWT_SECRET: ${file(.env):JWT_SECRET, ssm:jwt-secret}
   iam:
     role:
       statements:
