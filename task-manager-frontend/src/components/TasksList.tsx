@@ -69,7 +69,7 @@ const TasksList = React.memo(() => {
             />
           </Stack>
         </DialogContent>
-        <DialogActions sx={{ width: "100%", justifyContent: "center", alignItems: "center" }}>
+        <DialogActions sx={{ width: "80%", mx: "auto", justifyContent: "center", alignItems: "center" }}>
           <Button onClick={handleClose} color="secondary" sx={{ px: { xs: 3, md: 4 }, py: 2, m: 2 }}>
             Cancel
           </Button>
